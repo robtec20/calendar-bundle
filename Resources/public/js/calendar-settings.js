@@ -8,9 +8,16 @@ $(function () {
 			header: {
 				left: 'prev, next',
 				center: 'title',
-				right: 'month,basicWeek,basicDay,'
+				right: 'month,agendaWeek,agendaDay,'
+			},
+			allDaySlot:false,
+			droppable: true,
+			drop: function(date, allDay, jsEvent, ui) {
+				console.log(Routing.generate('fullcalendar_event_dropped'));
+				$.ajax({url: Routing.generate('fullcalendar_event_dropped'), data: {date: date, item: this}});
 			},
 			lazyFetching:true,
+			weekNumbers:true,
             timeFormat: {
                     // for agendaWeek and agendaDay
                     agenda: 'h:mmt', // 5:00 - 6:30
@@ -26,6 +33,13 @@ $(function () {
                            //alert('There was an error while fetching Google Calendar!');
                         }
                     }
-			]
+			],
+			eventClick: function(event, element) {
+				console.log('click');
+			},
+			editable: true,
+			eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+				$.ajax({url: Routing.generate('fullcalendar_event_dragged'), data: event});
+			}
 		});
 });

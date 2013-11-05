@@ -8,4 +8,14 @@
         <default key="_controller">ADesignsCalendarBundle:Calendar:loadCalendar</default>
         <option key="expose">true</option>
     </route>
+    
+    <route id="fullcalendar_event_dragged" pattern="/fc-event-dragged">
+        <default key="_controller">ADesignsCalendarBundle:Calendar:eventDragged</default>
+        <option key="expose">true</option>
+    </route>
+    
+    <route id="fullcalendar_event_dropped" pattern="/fc-event-dropped">
+        <default key="_controller">ADesignsCalendarBundle:Calendar:eventDropped</default>
+        <option key="expose">true</option>
+    </route>
 </routes>
