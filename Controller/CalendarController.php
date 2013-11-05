@@ -4,75 +4,98 @@ namespace ADesigns\CalendarBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
 use ADesigns\CalendarBundle\Event\CalendarEvent;
 use ADesigns\CalendarBundle\Event\SaveEvent;
 use ADesigns\CalendarBundle\Event\AddEvent;
 
-class CalendarController extends Controller
-{
-    /**
-     * Dispatch a CalendarEvent and return a JSON Response of any events returned.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function loadCalendarAction(Request $request)
-    {
-        $startDatetime = new \DateTime();
-        $startDatetime->setTimestamp($request->get('start'));
+class CalendarController extends Controller {
 
-        $endDatetime = new \DateTime();
-        $endDatetime->setTimestamp($request->get('end'));
+	/**
+	 * Dispatch a CalendarEvent and return a JSON Response of any events returned.
+	 *
+	 * @param Request $request
+	 * @return Response
+	 */
+	public function loadCalendarAction(Request $request) {
+		$startDatetime = new \DateTime ();
+		$startDatetime->setTimestamp ( $request->get ( 'start' ) );
 
-        $events = $this->container->get('event_dispatcher')->dispatch(CalendarEvent::CONFIGURE, new CalendarEvent($startDatetime, $endDatetime))->getEvents();
+		$endDatetime = new \DateTime ();
+		$endDatetime->setTimestamp ( $request->get ( 'end' ) );
 
-        $response = new \Symfony\Component\HttpFoundation\Response();
-        $response->headers->set('Content-Type', 'application/json');
+		$events = $this->container->get ( 'event_dispatcher' )->dispatch (
+			CalendarEvent::CONFIGURE, new CalendarEvent (
+				$startDatetime,
+				$endDatetime ) )->getEvents ();
 
-        $return_events = array();
+		$response = new \Symfony\Component\HttpFoundation\Response ();
+		$response->headers->set ( 'Content-Type', 'application/json' );
 
-        foreach($events as $event) {
-            $return_events[] = $event->toArray();
-        }
+		$return_events = array ();
 
-        $response->setContent(json_encode($return_events));
+		foreach ( $events as $event ) {
+			$return_events [] = $event->toArray ();
+		}
 
-        return $response;
-    }
+		$response->setContent ( json_encode ( $return_events ) );
 
-    public function eventDraggedAction(Request $request)
-    {
-    	$id = $request->get('id');
+		return $response;
+	}
 
-    	$startDatetime = new \DateTime($request->get('start'));
-        $endDatetime = new \DateTime($request->get('end'));
+	public function eventDraggedAction(Request $request) {
+		$id = $request->get ( 'id' );
 
-    	$event = $this->container->get('event_dispatcher')->dispatch(SaveEvent::CONFIGURE, new SaveEvent($id, $startDatetime, $endDatetime));
+		$startDatetime = new \DateTime (
+			$request->get ( 'start' ) );
+		$endDatetime = new \DateTime (
+			$request->get ( 'end' ) );
 
-    	$response = new \Symfony\Component\HttpFoundation\Response();
-    	$response->headers->set('Content-Type', 'application/json');
+		$event = $this->container->get ( 'event_dispatcher' )->dispatch ( SaveEvent::CONFIGURE,
+			new SaveEvent (
+				$id,
+				$startDatetime,
+				$endDatetime ) );
 
-//     	$response->setContent(json_encode($return_events));
+		$response = new \Symfony\Component\HttpFoundation\Response ();
+		$response->headers->set ( 'Content-Type', 'application/json' );
 
-    	return $response;
-    }
+		// $response->setContent(json_encode($return_events));
 
-    public function eventDroppedAction(Request $request)
-    {
-    	$userId = $request->get('id');
+		return $response;
+	}
 
-    	$startDatetime = new \DateTime($request->get('start'));
-    	$endDatetime = clone $startDatetime;
-    	$endDatetime->add(new \DateInterval('P60M'));
+	public function eventDroppedAction(Request $request) {
+		$userId = $request->get ( 'id' );
 
-    	$event = $this->container->get('event_dispatcher')->dispatch(AddEvent::CONFIGURE, new AddEvent($startDatetime, $endDatetime, $userId));
+		$startDatetime = new \DateTime (
+			$request->get ( 'date' ) );
+		$endDatetime = clone $startDatetime;
+		$endDatetime->add ( new \DateInterval (
+			'PT4H' ) );
 
-    	$response = new \Symfony\Component\HttpFoundation\Response();
-    	$response->headers->set('Content-Type', 'application/json');
+		$installationId = $request->get ( 'installationId' );
 
-    	//     	$response->setContent(json_encode($return_events));
+		$addEvent = new AddEvent (
+			$startDatetime,
+			$endDatetime,
+			$userId,
+			$installationId );
 
-    	return $response;
-    }
+		$event = $this->container->get ( 'event_dispatcher' )->dispatch ( AddEvent::CONFIGURE,
+			$addEvent );
+
+		$eventData = new \stdClass ();
+		$eventData->title = $event->getTitle ();
+		$eventData->id = $event->getEventId ();
+		$eventData->start = $addEvent->getStartDatetime ()->getTimestamp ();
+		$eventData->end = $addEvent->getEndDatetime ()->getTimestamp ();
+		$eventData->allDay = false;
+
+		$response = new \Symfony\Component\HttpFoundation\Response ();
+		$response->headers->set ( 'Content-Type', 'application/json' );
+
+		$response->setContent ( json_encode ( $eventData ) );
+
+		return $response;
+	}
 }
