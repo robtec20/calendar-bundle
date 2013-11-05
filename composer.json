@@ -20,5 +20,6 @@
 		"psr-0" : {
 			"ADesigns\\CalendarBundle" : ""
 		}
-	}
+	},
+	"target-dir" : "ADesigns/CalendarBundle"
 }
