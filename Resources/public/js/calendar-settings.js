@@ -12,8 +12,17 @@ $(function() {
 					right : 'month,agendaWeek,agendaDay,'
 				},
 				allDaySlot : false,
+				dayClick : function(date, jsEvent, view) {
+					$('#calendar-holder').fullCalendar('changeView', 'agendaDay');
+					$('#calendar-holder').fullCalendar('gotoDate', date);
+				},
 				droppable : true,
 				drop : function(date, allDay, jsEvent, ui) {
+					if($('#calendar-holder').fullCalendar('getView').name == 'month') {
+						if(date.getHours() == 0) {
+							date.setHours(8);
+						}
+					}
 					var element = this;
 					$.ajax({
 						url : Routing.generate('fullcalendar_event_dropped'),
@@ -29,14 +38,16 @@ $(function() {
 						}
 					});
 				},
+				firstDay : 1,
 				lazyFetching : true,
 				weekNumbers : true,
+				theme : false,
 				timeFormat : {
 					// for agendaWeek and agendaDay
-					agenda : 'h:mmt', // 5:00 - 6:30
+					agenda : 'hh:mm', // 5:00 - 6:30
 
 					// for all other views
-					'' : 'h:mmt' // 7p
+					'' : 'hh:mm' // 7p
 				},
 				eventSources : [ {
 					url : Routing.generate('fullcalendar_loader'),
