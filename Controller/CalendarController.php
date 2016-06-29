@@ -17,11 +17,10 @@ class CalendarController extends Controller {
 	 * @return Response
 	 */
 	public function loadCalendarAction(Request $request) {
-		$startDatetime = new \DateTime ();
-		$startDatetime->setTimestamp ( $request->get ( 'start' ) );
-
-		$endDatetime = new \DateTime ();
-		$endDatetime->setTimestamp ( $request->get ( 'end' ) );
+		$startDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+', 
+			$request->get ( 'start' ) );
+		$endDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+',
+			$request->get ( 'end' ) );
 
 		$events = $this->container->get ( 'event_dispatcher' )->dispatch (
 			CalendarEvent::CONFIGURE, new CalendarEvent (
@@ -45,9 +44,9 @@ class CalendarController extends Controller {
 	public function eventDraggedAction(Request $request) {
 		$id = $request->get ( 'id' );
 
-		$startDatetime = new \DateTime (
-			$request->get ( 'start' ) );
-		$endDatetime = new \DateTime (
+		$startDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+', 
+			$request->get ( 'date' ) );
+		$endDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+',
 			$request->get ( 'end' ) );
 
 		$event = $this->container->get ( 'event_dispatcher' )->dispatch ( SaveEvent::CONFIGURE,
