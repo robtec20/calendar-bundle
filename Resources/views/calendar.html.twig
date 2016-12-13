@@ -1,1 +1,28 @@
 <div id="calendar-holder"></div>
+<div id="calendar-remove-modal" class="modal hide fade" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <h3>Remove Appointment</h3>
+    </div>
+    <div class="modal-body text-center">
+        <p>Are you sure you would like to remove this appointment?<br></p>
+        <input type="hidden" name="event_id" id="event_id" value="">
+        <p><button class="btn btn-primary remove-event-btn" onclick="removeEvent($('#event_id').val())">Yes</button> <button data-dismiss="modal" class="btn remove-event-btn">No</button></p>
+    </div>
+</div>
+
+<script>
+    function removeEvent(id) {
+        $('.remove-event-btn').prop('disabled', true);
+        $.ajax({
+            url : Routing.generate('fullcalendar_event_removed'),
+            data : {
+                id : id
+            },
+            success : function(data, textStatus, jqXHR) {
+                $('#calendar-holder').fullCalendar('removeEvents',data.id);
+                $('#calendar-remove-modal').modal('hide');
+                $('.remove-event-btn').prop('disabled', false);
+            }
+        });
+    }
+</script>
