@@ -18,4 +18,9 @@
         <default key="_controller">ADesignsCalendarBundle:Calendar:eventDropped</default>
         <option key="expose">true</option>
     </route>
+
+    <route id="fullcalendar_event_removed" pattern="/fc-event-removed">
+        <default key="_controller">ADesignsCalendarBundle:Calendar:eventRemoved</default>
+        <option key="expose">true</option>
+    </route>
 </routes>

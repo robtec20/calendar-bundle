@@ -2,6 +2,7 @@
 
 namespace ADesigns\CalendarBundle\Controller;
 
+use ADesigns\CalendarBundle\Event\RemoveEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use ADesigns\CalendarBundle\Event\CalendarEvent;
@@ -45,7 +46,7 @@ class CalendarController extends Controller {
 		$id = $request->get ( 'id' );
 
 		$startDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+', 
-			$request->get ( 'date' ) );
+			$request->get ( 'start' ) );
 		$endDatetime = \DateTime::createFromFormat('D M d Y H:i:s e+',
 			$request->get ( 'end' ) );
 
@@ -94,6 +95,15 @@ class CalendarController extends Controller {
 		$response->headers->set ( 'Content-Type', 'application/json' );
 
 		$response->setContent ( json_encode ( $eventData ) );
+
+		return $response;
+	}
+
+	public function eventRemovedAction(Request $request) {
+		$id = $request->get ('id');
+		$this->container->get('event_dispatcher')->dispatch(RemoveEvent::CONFIGURE, new RemoveEvent($id));
+		$response = new \Symfony\Component\HttpFoundation\Response();
+		$response->headers->set ('Content-Type', 'application/json');
 
 		return $response;
 	}
