@@ -102,8 +102,12 @@ class CalendarController extends Controller {
 	public function eventRemovedAction(Request $request) {
 		$id = $request->get ('id');
 		$this->container->get('event_dispatcher')->dispatch(RemoveEvent::CONFIGURE, new RemoveEvent($id));
+		$eventData = new \stdClass ();;
+		$eventData->id = $id;
 		$response = new \Symfony\Component\HttpFoundation\Response();
 		$response->headers->set ('Content-Type', 'application/json');
+
+		$response->setContent ( json_encode ( $eventData ) );
 
 		return $response;
 	}
