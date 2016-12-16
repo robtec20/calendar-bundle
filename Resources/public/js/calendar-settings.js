@@ -36,6 +36,7 @@ $(function() {
 						$('#calendar-holder').fullCalendar('renderEvent',
 							data, true);
 						$(element).remove();
+						$('#appointment-finish-btn').removeClass('disabled');
 					}
 				});
 			},
