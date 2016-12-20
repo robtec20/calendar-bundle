@@ -36,7 +36,9 @@ $(function() {
 						$('#calendar-holder').fullCalendar('renderEvent',
 							data, true);
 						$(element).remove();
-						$('#appointment-finish-btn').removeClass('disabled');
+						$('#calendar-added-modal #engineer-name').text(data.title);
+						$('#calendar-added-modal #engineer-start').text(data.start);
+						$('#calendar-added-modal').modal();
 					}
 				});
 			},
