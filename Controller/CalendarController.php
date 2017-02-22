@@ -71,7 +71,7 @@ class CalendarController extends Controller {
 			$request->get ( 'date' ) );
 		$endDatetime = clone $startDatetime;
 		$endDatetime->add ( new \DateInterval (
-			'PT4H' ) );
+			'PT8H' ) );
 
 		$installationId = $request->get ( 'installationId' );
 
