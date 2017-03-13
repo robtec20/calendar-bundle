@@ -5,8 +5,7 @@ $(function() {
 	var y = date.getFullYear();
 	
 
-	$('#calendar-holder').fullCalendar(
-		{
+	$('#calendar-holder').fullCalendar({
 			header : {
 				left : 'prev, next',
 				center : 'title',
@@ -73,6 +72,7 @@ $(function() {
 			},
 			eventRender: function (event, element) {
 				$("<i class=\"icon-remove-sign\" style=\"float: right\"></i>").insertBefore(element.find('.fc-event-title'));
-			}
+			},
+            eventOverlap: false
 		});
 });
