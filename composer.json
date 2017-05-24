@@ -14,7 +14,7 @@
 	"require" : {
 		"friendsofsymfony/jsrouting-bundle" : "~1.1",
 		"doctrine/collections" : ">=1.0",
-		"symfony/framework-bundle" : ">=2.1,<2.8-dev"
+		"symfony/framework-bundle" : "~2.1"
 	},
 	"autoload" : {
 		"psr-0" : {
