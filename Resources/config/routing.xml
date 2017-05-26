@@ -4,22 +4,22 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="fullcalendar_loader" pattern="/fc-load-events">
+    <route id="fullcalendar_loader" path="/fc-load-events">
         <default key="_controller">ADesignsCalendarBundle:Calendar:loadCalendar</default>
         <option key="expose">true</option>
     </route>
     
-    <route id="fullcalendar_event_dragged" pattern="/fc-event-dragged">
+    <route id="fullcalendar_event_dragged" path="/fc-event-dragged">
         <default key="_controller">ADesignsCalendarBundle:Calendar:eventDragged</default>
         <option key="expose">true</option>
     </route>
     
-    <route id="fullcalendar_event_dropped" pattern="/fc-event-dropped">
+    <route id="fullcalendar_event_dropped" path="/fc-event-dropped">
         <default key="_controller">ADesignsCalendarBundle:Calendar:eventDropped</default>
         <option key="expose">true</option>
     </route>
 
-    <route id="fullcalendar_event_removed" pattern="/fc-event-removed">
+    <route id="fullcalendar_event_removed" path="/fc-event-removed">
         <default key="_controller">ADesignsCalendarBundle:Calendar:eventRemoved</default>
         <option key="expose">true</option>
     </route>
